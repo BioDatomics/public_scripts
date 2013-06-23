@@ -27,7 +27,11 @@ REGION=us-west-2
 #ZONE=us-west-2a #availability zone, need to be verified for better price
 ZONE=$4
 #KEY_PAIR=biodatomics-key
-KEY_PAIR=$5
+KEY_PAIR=/var/lib/jenkins/${5}
+
+echo $KEY_PAIR
+ls -lahs $KEY_PAIR
+exit
 
 #TAG_NAME="Jenkins Slave CentOS6.4"
 TAG_NAME=$6
