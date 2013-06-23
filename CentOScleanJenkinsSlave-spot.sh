@@ -5,6 +5,7 @@
 whoami
 who
 pwd
+exit
 
 
 #ami for CentOS 6.4 with only root disk and cloud-init installed
