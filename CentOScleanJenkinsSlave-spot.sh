@@ -25,9 +25,6 @@ ZONE=$4
 #KEY_PAIR=biodatomics-key
 KEY_PAIR=/var/lib/jenkins/${5}.pem
 
-echo $KEY_PAIR
-ls -lahs $KEY_PAIR
-exit
 
 #TAG_NAME="Jenkins Slave CentOS6.4"
 TAG_NAME=$6
@@ -146,7 +143,7 @@ done
 
 ec2addtag --region $REGION $INSTANCE_ID --tag Name="$TAG_NAME" -t type="Jenkins SpotInstance slave"
 
-RUN_TEST=`ssh -i ${KEY_PAIR}.pem -o "StrictHostKeyChecking no" -f -o ConnectTimeout=30 ec2-user@${INSTANCE_INTERNAL_HOSTNAME} java -version 2>&1| grep version`
+RUN_TEST=`ssh -i ${KEY_PAIR} -o "StrictHostKeyChecking no" -f -o ConnectTimeout=30 ec2-user@${INSTANCE_INTERNAL_HOSTNAME} java -version 2>&1| grep version`
 
 #System should leave this cycle only when instance answered on ssh connection and java installed. 
 COUNT=40
@@ -155,7 +152,7 @@ do
 	COUNT=`expr $COUNT - 1`
 	echo "Waiting until instance starts and java installed countdown : $COUNT"
 	sleep 20
-	RUN_TEST=`ssh -i ${KEY_PAIR}.pem -o "StrictHostKeyChecking no" -f -o ConnectTimeout=20 ec2-user@${INSTANCE_INTERNAL_HOSTNAME} java -version 2>&1| grep version`
+	RUN_TEST=`ssh -i ${KEY_PAIR} -o "StrictHostKeyChecking no" -f -o ConnectTimeout=20 ec2-user@${INSTANCE_INTERNAL_HOSTNAME} java -version 2>&1| grep version`
 	
 	if [ $COUNT -le 1 ]
 	then
@@ -165,8 +162,8 @@ do
 	fi
 done
 
-ssh -i ${KEY_PAIR}.pem -o "StrictHostKeyChecking no" ec2-user@${INSTANCE_INTERNAL_HOSTNAME} java -jar /home/ec2-user/slave.jar
-ssh -i ${KEY_PAIR}.pem -o "StrictHostKeyChecking no" ec2-user@${INSTANCE_INTERNAL_HOSTNAME} sudo shutdown -h now
+ssh -i ${KEY_PAIR} -o "StrictHostKeyChecking no" ec2-user@${INSTANCE_INTERNAL_HOSTNAME} java -jar /home/ec2-user/slave.jar
+ssh -i ${KEY_PAIR} -o "StrictHostKeyChecking no" ec2-user@${INSTANCE_INTERNAL_HOSTNAME} sudo shutdown -h now
 
 ec2-cancel-spot-instance-requests --region $REGION $SIR_REQUEST
 ec2-terminate-instances --region $REGION $INSTANCE_ID
