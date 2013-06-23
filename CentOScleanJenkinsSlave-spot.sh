@@ -51,6 +51,7 @@ chmod a+x jdk-6u45-linux-x64-rpm.bin
 ./jdk-6u45-linux-x64-rpm.bin 
 /usr/sbin/alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_45/bin/java 20000
 
+mkdir -p /home/ec2-user/ram
 mount -t tmpfs -o size=50G tmpfs /home/ec2-user/ram 
 chown -R ec2-user:ec2-user /home/ec2-user/ram
 
