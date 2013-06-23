@@ -4,9 +4,9 @@
 
 #Jenkins starts this script from root "/". we need to fix it
 cd
-ls -lahs 
+mkdir -f tmp
+cd tmp
 
-exit
 #ami for CentOS 6.4 with only root disk and cloud-init installed
 #CentOS6.4 with cloud init on EBS storage : ami-1064f120
 #CentOS6.4 with all packages for Ambari building: ami-47be2f77
@@ -37,7 +37,7 @@ MAPPING='/dev/sdb=ephemeral0' #adding block device see "ec2-request-spot-instanc
 REQUEST='one-time' #Specified the spot instance request type; either 'one-time' or 'persistent'.
 
 #script below will be automatically started on instance after it activated. 
-cat > ~/script.txt << EOF
+cat > script.txt << EOF
 #!/bin/sh
 
 #download slave jar
@@ -58,7 +58,7 @@ yum -y install git-1.7.11.3-1.el6.rfx.x86_64.rpm perl-Git-1.7.11.3-1.el6.rfx.x86
 EOF
 
 SIR_REQUEST_TMP=`ec2-request-spot-instances -k $KEY_PAIR --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE \
-    -r $REQUEST -z $ZONE --group $SECURITY_GROUP --user-data-file=~/script.txt`
+    -r $REQUEST -z $ZONE --group $SECURITY_GROUP --user-data-file=script.txt`
 
 SIR_REQUEST=`echo $SIR_REQUEST_TMP | cut -f 2 -d " " | grep sir-`
 rm -f script.txt
