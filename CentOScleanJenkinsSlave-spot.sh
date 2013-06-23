@@ -4,7 +4,7 @@
 
 #Jenkins starts this script from root "/". we need to fix it
 cd
-mkdir -f tmp
+mkdir -p tmp
 cd tmp
 
 #ami for CentOS 6.4 with only root disk and cloud-init installed
