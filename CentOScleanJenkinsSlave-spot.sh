@@ -58,7 +58,7 @@ EOF
 SIR_REQUEST_TMP=`ec2-request-spot-instances -k $KEY_PAIR --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE \
     -r $REQUEST -z $ZONE --group $SECURITY_GROUP --user-data-file=~/script.txt`
 
-echo error = $?
+echo $SIR_REQUEST_TMP
 if [ -z $? ] ; 
 then
 	exit 1
