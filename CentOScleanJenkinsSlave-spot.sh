@@ -2,12 +2,8 @@
 #Before using this script is necessary to install package:
 #sudo apt-get install ec2-api-tools
 
-whoami
-who
-cd
-pwd
-exit
-
+#Jenkins starts this script from root "/". we need to fix it
+# cd
 
 #ami for CentOS 6.4 with only root disk and cloud-init installed
 #CentOS6.4 with cloud init on EBS storage : ami-1064f120
@@ -62,7 +58,10 @@ EOF
 SIR_REQUEST_TMP=`ec2-request-spot-instances -k $KEY_PAIR --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE \
     -r $REQUEST -z $ZONE --group $SECURITY_GROUP --user-data-file=~/script.txt`
 
-echo $?
+if [ -z $? ] then; 
+exit 1
+
+fi
 
 SIR_REQUEST=`echo $SIR_REQUEST_TMP | cut -f 2 -d " " | grep sir-`
 rm -f script.txt
