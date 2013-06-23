@@ -70,8 +70,6 @@ if [ -z $SIR_REQUEST ] ; then
 	echo used command: ec2-request-spot-instances -k $KEY_PAIR --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE -r $REQUEST -z $ZONE --group $SECURITY_GROUP --user-data-file=~/script.txt
 	exit 1
 fi
-echo wrong exit
-exit 
 
 #Capture status of request. Initially request has STATUS=open and we need it to be active in order to continue
 STATUS=`ec2-describe-spot-instance-requests --region $REGION | grep $SIR_REQUEST | cut -f 6 `
