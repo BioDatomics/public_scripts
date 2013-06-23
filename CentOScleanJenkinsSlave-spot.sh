@@ -4,6 +4,7 @@
 
 whoami
 who
+cd
 pwd
 exit
 
