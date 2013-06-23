@@ -23,6 +23,7 @@ REGION=us-west-2
 #ZONE=us-west-2a #availability zone, need to be verified for better price
 ZONE=$4
 #KEY_PAIR=biodatomics-key
+KEY_NAME=$5
 KEY_PAIR=/var/lib/jenkins/${5}.pem
 
 
@@ -58,7 +59,7 @@ yum -y install git-1.7.11.3-1.el6.rfx.x86_64.rpm perl-Git-1.7.11.3-1.el6.rfx.x86
 
 EOF
 
-SIR_REQUEST_TMP=`ec2-request-spot-instances -k $KEY_PAIR --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE \
+SIR_REQUEST_TMP=`ec2-request-spot-instances -k $KEY_NAME --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE \
     -r $REQUEST -z $ZONE --group $SECURITY_GROUP --user-data-file=script.txt`
 
 SIR_REQUEST=`echo $SIR_REQUEST_TMP | cut -f 2 -d " " | grep sir-`
@@ -68,7 +69,7 @@ echo $SIR_REQUEST
 
 if [ -z $SIR_REQUEST ] ; then
 	echo "Request wasn't placed due to error"
-	echo used command: ec2-request-spot-instances -k $KEY_PAIR --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE -r $REQUEST -z $ZONE --group $SECURITY_GROUP --user-data-file=~/script.txt
+	echo used command: ec2-request-spot-instances -k $KEY_NAME --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE -r $REQUEST -z $ZONE --group $SECURITY_GROUP --user-data-file=~/script.txt
 	exit 1
 fi
 
