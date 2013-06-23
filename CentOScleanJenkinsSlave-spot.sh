@@ -2,6 +2,11 @@
 #Before using this script is necessary to install package:
 #sudo apt-get install ec2-api-tools
 
+whoami
+who
+pwd
+
+
 #ami for CentOS 6.4 with only root disk and cloud-init installed
 #CentOS6.4 with cloud init on EBS storage : ami-1064f120
 #CentOS6.4 with all packages for Ambari building: ami-47be2f77
