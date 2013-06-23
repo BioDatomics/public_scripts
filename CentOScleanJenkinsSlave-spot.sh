@@ -7,6 +7,10 @@ cd
 mkdir -p tmp
 cd tmp
 
+echo ssh -i ${KEY_PAIR}.pem 
+ls 
+
+exit
 #ami for CentOS 6.4 with only root disk and cloud-init installed
 #CentOS6.4 with cloud init on EBS storage : ami-1064f120
 #CentOS6.4 with all packages for Ambari building: ami-47be2f77
