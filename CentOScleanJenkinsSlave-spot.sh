@@ -58,17 +58,18 @@ EOF
 SIR_REQUEST_TMP=`ec2-request-spot-instances -k $KEY_PAIR --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE \
     -r $REQUEST -z $ZONE --group $SECURITY_GROUP --user-data-file=~/script.txt`
 
-echo $SIR_REQUEST_TMP
-if [ -z $? ] ; 
-then
-	exit 1
-
-fi
-
-wrong exit
-exit 2
 SIR_REQUEST=`echo $SIR_REQUEST_TMP | cut -f 2 -d " " | grep sir-`
 rm -f script.txt
+
+echo $SIR_REQUEST
+
+if [ -z $SIR_REQUEST ] ; then
+	echo "Request wasn't placed due to error"
+	echo used command: ec2-request-spot-instances -k $KEY_PAIR --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE -r $REQUEST -z $ZONE --group $SECURITY_GROUP --user-data-file=~/script.txt
+	exit 1
+fi
+echo wrong exit
+exit 
 
 #Capture status of request. Initially request has STATUS=open and we need it to be active in order to continue
 STATUS=`ec2-describe-spot-instance-requests --region $REGION | grep $SIR_REQUEST | cut -f 6 `
