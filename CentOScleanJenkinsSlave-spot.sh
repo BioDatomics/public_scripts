@@ -23,7 +23,7 @@ REGION=us-west-2
 #ZONE=us-west-2a #availability zone, need to be verified for better price
 ZONE=$4
 #KEY_PAIR=biodatomics-key
-KEY_PAIR=/var/lib/jenkins/${5}
+KEY_PAIR=/var/lib/jenkins/${5}.pem
 
 echo $KEY_PAIR
 ls -lahs $KEY_PAIR
