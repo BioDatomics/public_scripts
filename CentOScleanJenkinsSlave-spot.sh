@@ -58,6 +58,12 @@ chown -R ec2-user:ec2-user /home/ec2-user/ram
 wget http://pkgs.repoforge.org/git/git-1.7.11.3-1.el6.rfx.x86_64.rpm http://pkgs.repoforge.org/git/perl-Git-1.7.11.3-1.el6.rfx.x86_64.rpm
 yum -y install git-1.7.11.3-1.el6.rfx.x86_64.rpm perl-Git-1.7.11.3-1.el6.rfx.x86_64.rpm
 
+yum -y install curl
+
+\curl -L https://get.rvm.io | bash -s stable --rails
+
+rvm install jruby-1.7.3
+
 EOF
 
 SIR_REQUEST_TMP=`ec2-request-spot-instances -k $KEY_NAME --region $REGION $AMI -n $NUM_INSTANCES -b $MAPPING -p $PRICE -t $TYPE \
