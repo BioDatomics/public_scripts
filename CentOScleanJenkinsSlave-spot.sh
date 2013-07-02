@@ -57,6 +57,7 @@ chown -R ec2-user:ec2-user /home/ec2-user/ram
 
 wget http://pkgs.repoforge.org/git/git-1.7.11.3-1.el6.rfx.x86_64.rpm http://pkgs.repoforge.org/git/perl-Git-1.7.11.3-1.el6.rfx.x86_64.rpm
 yum -y install git-1.7.11.3-1.el6.rfx.x86_64.rpm perl-Git-1.7.11.3-1.el6.rfx.x86_64.rpm
+yum -y install rpm-build
 
 EOF
 
