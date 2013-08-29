@@ -1,0 +1,76 @@
+#!/bin/sh
+# chkconfig: 345 80 20
+# description: ResourceManager server daemon
+ 
+HADOOP_CONF_DIR="/etc/hadoop/conf"
+HADOOP_DAEMON="/usr/lib/hadoop-yarn/sbin/yarn-daemon.sh"
+HADOOP_OPTS="--config $HADOOP_CONF_DIR start resourcemanager"
+HDFS_USER="yarn"
+LOCK_FILE="/var/lock/subsys/hadoop_resourcemanager"
+. /etc/init.d/functions
+
+pid_from_file() {
+    cat /var/run/hadoop/yarn/yarn-yarn-resourcemanager.pid
+}
+
+real_pid() {
+    ps auxf | grep org.apache.hadoop.yarn.server.resourcemanager.ResourceManager$ | awk '/^yarn/ {print $2}'
+}
+ 
+start() {
+    echo -n Starting Hadoop ResourceManager server:
+    daemon --user=$HDFS_USER $HADOOP_DAEMON $HADOOP_OPTS
+    retval=$?
+    echo
+    [ "$retval" = 0 ] && touch $LOCK_FILE
+    return $retval
+}
+ 
+stop() {
+    echo -n Stopping Hadoop ResourceManager server:
+    KILL_STATUS=0
+    [[ `pid_from_file` == `real_pid` ]] && kill `real_pid`
+    retval=$?
+    sleep 5
+    if [[ $retval != 0 ]] ; then
+        echo "  Something went wrong. Maybe it's not started. Check it manually."
+        exit 20
+    else
+        rm -f $LOCK_FILE
+        if [[ `pid_from_file` == `real_pid` ]] ; then
+            echo "  Something went wrong. Check it manually."
+            exit 10
+        else
+	    echo "  Hadoop ResourceManager server stopped."
+            exit 0
+        fi
+    fi
+}
+
+status() {
+    [[ `pid_from_file` == `real_pid` ]] && echo "Hadoop ResourceManager server is running with pid: `real_pid`." && exit 0
+    echo "Hadoop ResourceManager server is stopped."
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status resourcemanager
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: resourcemanager {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
+ 
+exit 0
+
